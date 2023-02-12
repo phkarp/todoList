@@ -46,9 +46,9 @@ class App extends Component {
     };
 
     this.onChangeClass = id => {
-      const idx = this.state.todoData.findIndex(el => el.id === id);
-
       this.setState(({ todoData }) => {
+        const idx = todoData.findIndex(el => el.id === id);
+
         const result = [
           ...todoData.slice(0, idx),
           { ...todoData[idx], className: todoData[idx].className === 'active' ? 'completed' : 'active' },

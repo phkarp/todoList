@@ -4,11 +4,13 @@ import './task.css';
 
 class Task extends Component {
   render() {
-    const { id, description, created, onDeleted, onChangeClass } = this.props;
+    const { id, description, created, onDeleted, onChangeClass, className } = this.props;
+
+    const check = className === 'completed';
 
     return (
       <div className="view">
-        <input id={id} className="toggle" type="checkbox" />
+        <input id={id} className="toggle" type="checkbox" checked={check} />
         <label htmlFor={id} onClick={onChangeClass}>
           <span className="description">{description}</span>
           <span className="created">{created}</span>

@@ -8,21 +8,20 @@ class TaskList extends Component {
     const { todos, onDeleted, onChangeClass } = this.props;
 
     const tasks = todos.map(item => {
-      const { className, ...itemProps } = item;
       let inputEditing = null;
 
-      if (className === 'editing') {
+      if (item.className === 'editing') {
         inputEditing = <input type="text" className="edit" defaultValue="Editing task" />;
       }
 
       return (
-        <li className={className} key={itemProps.id}>
+        <li className={item.className} key={item.id}>
           <Task
-            {...itemProps}
+            {...item}
             onDeleted={() => {
-              onDeleted(itemProps.id);
+              onDeleted(item.id);
             }}
-            onChangeClass={() => onChangeClass(itemProps.id)}
+            onChangeClass={() => onChangeClass(item.id)}
           />
           {inputEditing}
         </li>
