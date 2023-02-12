@@ -32,6 +32,7 @@ class App extends Component {
         },
       ],
     };
+
     this.deleteTask = id => {
       this.setState(({ todoData }) => {
         const idx = todoData.findIndex(el => el.id === id);
@@ -43,11 +44,23 @@ class App extends Component {
         };
       });
     };
+
+    this.onChangeClass = id => {
+      const idx = this.state.todoData.findIndex(el => el.id === id);
+
+      this.setState(({ todoData }) => {
+        const result = [
+          ...todoData.slice(0, idx),
+          { ...todoData[idx], className: todoData[idx].className === 'active' ? 'completed' : 'active' },
+          ...todoData.slice(idx + 1),
+        ];
+
+        return { todoData: result };
+      });
+    };
   }
 
   render() {
-    const todoData = this.state.todoData;
-
     return (
       <section className="todoapp">
         <header className="header">
@@ -55,7 +68,7 @@ class App extends Component {
           <NewTaskForm />
         </header>
         <section className="main">
-          <TaskList todos={todoData} onDeleted={this.deleteTask} />
+          <TaskList todos={this.state.todoData} onDeleted={this.deleteTask} onChangeClass={this.onChangeClass} />
           <Footer />
         </section>
       </section>

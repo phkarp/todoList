@@ -4,27 +4,28 @@ import Task from '../task/task';
 import './task-list.css';
 
 class TaskList extends Component {
-  constructor(prop) {
-    super(prop);
-    this.state = {
-      active: true,
-    };
-  }
-
   render() {
-    const { todos, onDeleted } = this.props;
+    const { todos, onDeleted, onChangeClass } = this.props;
 
     const tasks = todos.map(item => {
-      const { ...itemProps } = item;
+      const { className, ...itemProps } = item;
+      let inputEditing = null;
+
+      if (className === 'editing') {
+        inputEditing = <input type="text" className="edit" defaultValue="Editing task" />;
+      }
 
       return (
-        <Task
-          key={itemProps.id}
-          {...itemProps}
-          onDeleted={() => {
-            onDeleted(itemProps.id);
-          }}
-        />
+        <li className={className} key={itemProps.id}>
+          <Task
+            {...itemProps}
+            onDeleted={() => {
+              onDeleted(itemProps.id);
+            }}
+            onChangeClass={() => onChangeClass(itemProps.id)}
+          />
+          {inputEditing}
+        </li>
       );
     });
 
