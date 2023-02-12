@@ -17,18 +17,21 @@ class App extends Component {
           created: 'created 17 seconds ago',
           id: 'task1',
           className: 'completed',
+          done: true,
         },
         {
           description: 'Editing task',
           created: 'created 5 minutes ago',
           id: 'task2',
           className: 'editing',
+          done: false,
         },
         {
           description: 'Active task',
           created: 'created 5 minutes ago',
           id: 'task3',
           className: 'active',
+          done: false,
         },
       ],
     };
@@ -49,11 +52,13 @@ class App extends Component {
       this.setState(({ todoData }) => {
         const idx = todoData.findIndex(el => el.id === id);
 
-        const result = [
-          ...todoData.slice(0, idx),
-          { ...todoData[idx], className: todoData[idx].className === 'active' ? 'completed' : 'active' },
-          ...todoData.slice(idx + 1),
-        ];
+        const newItem = {
+          ...todoData[idx],
+          className: todoData[idx].done ? 'active' : 'completed',
+          done: !todoData[idx].done,
+        };
+
+        const result = [...todoData.slice(0, idx), newItem, ...todoData.slice(idx + 1)];
 
         return { todoData: result };
       });
@@ -61,6 +66,9 @@ class App extends Component {
   }
 
   render() {
+    const { todoData } = this.state;
+    const activeCount = todoData.filter(el => !el.done).length;
+
     return (
       <section className="todoapp">
         <header className="header">
@@ -68,8 +76,8 @@ class App extends Component {
           <NewTaskForm />
         </header>
         <section className="main">
-          <TaskList todos={this.state.todoData} onDeleted={this.deleteTask} onChangeClass={this.onChangeClass} />
-          <Footer />
+          <TaskList todos={todoData} onDeleted={this.deleteTask} onChangeClass={this.onChangeClass} />
+          <Footer activeCount={activeCount} />
         </section>
       </section>
     );

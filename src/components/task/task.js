@@ -10,7 +10,7 @@ class Task extends Component {
 
     return (
       <div className="view">
-        <input id={id} className="toggle" type="checkbox" checked={check} />
+        <input id={id} className="toggle" type="checkbox" defaultChecked={check} />
         <label htmlFor={id} onClick={onChangeClass}>
           <span className="description">{description}</span>
           <span className="created">{created}</span>
