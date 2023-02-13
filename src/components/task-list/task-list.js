@@ -6,10 +6,28 @@ import './task-list.css';
 
 export default class TaskList extends Component {
   render() {
-    const { todos, onDeleted, onCompleted, onEdit } = this.props;
+    const { todos, onDeleted, onCompleted, onEdit, onUpdateDescription } = this.props;
 
     const tasks = todos.map(item => {
-      const { className, id } = item;
+      const { className, id, description } = item;
+      let inputEdit = null;
+      if (className === 'editing') {
+        inputEdit = (
+          <input
+            type="text"
+            className="edit"
+            value={description}
+            onChange={e => {
+              onUpdateDescription(id, e.target.value);
+            }}
+          />
+        );
+      }
+
+      const onSubmit = e => {
+        e.preventDefault();
+        onEdit(id);
+      };
 
       return (
         <li className={className} key={id}>
@@ -21,6 +39,8 @@ export default class TaskList extends Component {
             onCompleted={() => onCompleted(id)}
             onEdit={() => onEdit(id)}
           />
+
+          <form onSubmit={onSubmit}>{inputEdit}</form>
         </li>
       );
     });
