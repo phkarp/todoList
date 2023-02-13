@@ -1,14 +1,11 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import './tasks-filter.css';
 
 export default class TasksFilter extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      test: '',
-    };
-
     this.filter = e => {
       props.onFilter(e);
     };
@@ -36,3 +33,13 @@ export default class TasksFilter extends Component {
     );
   }
 }
+
+TasksFilter.defaultProps = {
+  classBtn: { all: 'selected', active: '', completed: '' },
+  onFilter: () => {},
+};
+
+TasksFilter.propsTypes = {
+  classBtn: PropTypes.object,
+  onFilter: PropTypes.func,
+};

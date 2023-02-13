@@ -1,9 +1,10 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import './footer.css';
 import TasksFilter from '../tasks-filter/tasks-filter';
 
-class Footer extends Component {
+export default class Footer extends Component {
   constructor(props) {
     super(props);
 
@@ -38,4 +39,14 @@ class Footer extends Component {
   }
 }
 
-export default Footer;
+Footer.defaultProps = {
+  onClearCompleted: () => {},
+  onFilter: () => {},
+  activeCount: 0,
+};
+
+Footer.propTypes = {
+  onClearCompleted: PropTypes.func,
+  onFilter: PropTypes.func,
+  activeCount: PropTypes.number,
+};

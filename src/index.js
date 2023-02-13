@@ -17,31 +17,27 @@ class App extends Component {
       todoData: [
         {
           description: 'Completed task',
-          created: 'created 17 seconds ago',
+          created: Date.now(),
           id: 'task1',
           className: 'completed',
           done: true,
         },
         {
           description: 'Editing task',
-          created: 'created 5 minutes ago',
+          created: Date.now(),
           id: 'task2',
           className: 'editing',
           done: false,
         },
         {
           description: 'Active task',
-          created: 'created 5 minutes ago',
+          created: Date.now(),
           id: 'task3',
           className: 'active',
           done: false,
         },
       ],
       filterBtn: 'All',
-    };
-
-    this.deleteElem = (arr, id) => {
-      return [...arr.slice(0, id), ...arr.slice(id + 1)];
     };
 
     this.onClearCompleted = () => {
@@ -57,7 +53,7 @@ class App extends Component {
         const idx = todoData.findIndex(el => el.id === id);
 
         return {
-          todoData: this.deleteElem(todoData, idx),
+          todoData: [...todoData.slice(0, idx), ...todoData.slice(idx + 1)],
         };
       });
     };
@@ -83,7 +79,7 @@ class App extends Component {
         const arr = todoData.slice();
         arr.push({
           description: value,
-          created: 'created 5 minutes ago',
+          created: Date.now(),
           id: `task${this.maxId++}`,
           className: 'active',
           done: false,
