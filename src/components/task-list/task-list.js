@@ -6,7 +6,7 @@ import './task-list.css';
 
 export default class TaskList extends Component {
   render() {
-    const { todos, onDeleted, onChangeClass } = this.props;
+    const { todos, onDeleted, onCompleted, onEdit } = this.props;
 
     const tasks = todos.map(item => {
       const { className, id } = item;
@@ -18,9 +18,9 @@ export default class TaskList extends Component {
             onDeleted={() => {
               onDeleted(id);
             }}
-            onChangeClass={() => onChangeClass(id)}
+            onCompleted={() => onCompleted(id)}
+            onEdit={() => onEdit(id)}
           />
-          {className === 'editing' ? <input type="text" className="edit" defaultValue="Editing task" /> : null}
         </li>
       );
     });
@@ -30,12 +30,16 @@ export default class TaskList extends Component {
 }
 
 TaskList.defaultProps = {
-  onChangeClass: () => {},
+  onCompleted: () => {},
   onDeleted: () => {},
+  onEdit: () => {},
+  onUpdateDescription: () => {},
 };
 
 TaskList.propTypes = {
-  onChangeClass: PropTypes.func,
+  onCompleted: PropTypes.func,
   onDeleted: PropTypes.func,
+  onEdit: PropTypes.func,
+  onUpdateDescription: PropTypes.func,
   todos: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
