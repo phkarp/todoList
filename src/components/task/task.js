@@ -6,16 +6,16 @@ import './task.css';
 
 export default class Task extends Component {
   render() {
-    const { id, description, created, onDeleted, onChangeClass, done } = this.props;
+    const { id, description, created, onDeleted, onCompleted, done, onEdit } = this.props;
 
     return (
       <div className="view">
-        <input id={id} className="toggle" type="checkbox" defaultChecked={done} onClick={onChangeClass} />
+        <input id={id} className="toggle" type="checkbox" defaultChecked={done} onClick={onCompleted} />
         <label htmlFor={id}>
           <span className="description">{description}</span>
           <span className="created">created {formatDistanceToNow(created, { includeSeconds: true })} ago</span>
         </label>
-        <button className="icon icon-edit"></button>
+        <button className="icon icon-edit" onClick={onEdit}></button>
         <button className="icon icon-destroy" onClick={onDeleted}></button>
       </div>
     );
@@ -23,16 +23,18 @@ export default class Task extends Component {
 }
 
 Task.defaultProps = {
-  onChangeClass: () => {},
+  onCompleted: () => {},
   onDeleted: () => {},
+  onEdit: () => {},
   done: false,
   created: Date.now(),
   description: '',
 };
 
 Task.propTypes = {
-  onChangeClass: PropTypes.func,
+  onCompleted: PropTypes.func,
   onDeleted: PropTypes.func,
+  onEdit: PropTypes.func,
   done: PropTypes.bool,
   id: PropTypes.string.isRequired,
   created: PropTypes.number,

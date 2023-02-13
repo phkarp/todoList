@@ -14,29 +14,7 @@ class App extends Component {
     this.maxId = 4;
 
     this.state = {
-      todoData: [
-        {
-          description: 'Completed task',
-          created: Date.now(),
-          id: 'task1',
-          className: 'completed',
-          done: true,
-        },
-        {
-          description: 'Editing task',
-          created: Date.now(),
-          id: 'task2',
-          className: 'editing',
-          done: false,
-        },
-        {
-          description: 'Active task',
-          created: Date.now(),
-          id: 'task3',
-          className: 'active',
-          done: false,
-        },
-      ],
+      todoData: [],
       filterBtn: 'All',
     };
 
@@ -48,7 +26,7 @@ class App extends Component {
       });
     };
 
-    this.deleteTask = id => {
+    this.onDeleted = id => {
       this.setState(({ todoData }) => {
         const idx = todoData.findIndex(el => el.id === id);
 
@@ -58,7 +36,7 @@ class App extends Component {
       });
     };
 
-    this.onChangeClass = id => {
+    this.onCompleted = id => {
       this.setState(({ todoData }) => {
         const idx = todoData.findIndex(el => el.id === id);
 
@@ -91,6 +69,37 @@ class App extends Component {
     this.onFilter = e => {
       this.setState({ filterBtn: e.target.textContent });
     };
+
+    this.onEdit = id => {
+      this.setState(({ todoData }) => {
+        const idx = todoData.findIndex(el => el.id === id);
+        const elemClassName = todoData[idx].className;
+
+        const newItem = {
+          ...todoData[idx],
+          className: elemClassName === 'active' ? 'editing' : elemClassName === 'editing' ? 'active' : elemClassName,
+        };
+
+        const result = [...todoData.slice(0, idx), newItem, ...todoData.slice(idx + 1)];
+
+        return { todoData: result };
+      });
+    };
+
+    this.onUpdateDescription = (id, description) => {
+      this.setState(({ todoData }) => {
+        const idx = todoData.findIndex(el => el.id === id);
+
+        const newItem = {
+          ...todoData[idx],
+          description: description,
+        };
+
+        const result = [...todoData.slice(0, idx), newItem, ...todoData.slice(idx + 1)];
+
+        return { todoData: result };
+      });
+    };
   }
 
   render() {
@@ -112,7 +121,13 @@ class App extends Component {
           <NewTaskForm onItemAdded={this.onItemAdded} />
         </header>
         <section className="main">
-          <TaskList todos={filterData} onDeleted={this.deleteTask} onChangeClass={this.onChangeClass} />
+          <TaskList
+            todos={filterData}
+            onDeleted={this.onDeleted}
+            onCompleted={this.onCompleted}
+            onEdit={this.onEdit}
+            onUpdateDescription={this.onUpdateDescription}
+          />
           <Footer activeCount={activeCount} onClearCompleted={this.onClearCompleted} onFilter={this.onFilter} />
         </section>
       </section>
