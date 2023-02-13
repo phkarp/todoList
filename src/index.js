@@ -10,6 +10,9 @@ import './index.css';
 class App extends Component {
   constructor(prop) {
     super(prop);
+
+    this.maxId = 4;
+
     this.state = {
       todoData: [
         {
@@ -34,16 +37,27 @@ class App extends Component {
           done: false,
         },
       ],
+      filterBtn: 'All',
+    };
+
+    this.deleteElem = (arr, id) => {
+      return [...arr.slice(0, id), ...arr.slice(id + 1)];
+    };
+
+    this.onClearCompleted = () => {
+      this.setState(({ todoData }) => {
+        const arr = todoData.filter(el => el.className !== 'completed');
+
+        return { todoData: arr };
+      });
     };
 
     this.deleteTask = id => {
       this.setState(({ todoData }) => {
         const idx = todoData.findIndex(el => el.id === id);
 
-        const newArr = [...todoData.slice(0, idx), ...todoData.slice(idx + 1)];
-
         return {
-          todoData: newArr,
+          todoData: this.deleteElem(todoData, idx),
         };
       });
     };
@@ -63,21 +77,47 @@ class App extends Component {
         return { todoData: result };
       });
     };
+
+    this.onItemAdded = value => {
+      this.setState(({ todoData }) => {
+        const arr = todoData.slice();
+        arr.push({
+          description: value,
+          created: 'created 5 minutes ago',
+          id: `task${this.maxId++}`,
+          className: 'active',
+          done: false,
+        });
+        return { todoData: arr };
+      });
+    };
+
+    this.onFilter = e => {
+      this.setState({ filterBtn: e.target.textContent });
+    };
   }
 
   render() {
     const { todoData } = this.state;
     const activeCount = todoData.filter(el => !el.done).length;
 
+    let filterData = todoData;
+    if (this.state.filterBtn === 'Active') {
+      filterData = this.state.todoData.filter(el => el.className !== 'completed');
+    }
+    if (this.state.filterBtn === 'Completed') {
+      filterData = this.state.todoData.filter(el => el.className === 'completed');
+    }
+
     return (
       <section className="todoapp">
         <header className="header">
           <h1>todos</h1>
-          <NewTaskForm />
+          <NewTaskForm onItemAdded={this.onItemAdded} />
         </header>
         <section className="main">
-          <TaskList todos={todoData} onDeleted={this.deleteTask} onChangeClass={this.onChangeClass} />
-          <Footer activeCount={activeCount} />
+          <TaskList todos={filterData} onDeleted={this.deleteTask} onChangeClass={this.onChangeClass} />
+          <Footer activeCount={activeCount} onClearCompleted={this.onClearCompleted} onFilter={this.onFilter} />
         </section>
       </section>
     );
