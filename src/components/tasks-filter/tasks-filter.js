@@ -11,10 +11,17 @@ export default class TasksFilter extends Component {
     };
   }
   render() {
+    console.log(this.props.checkedRadio);
     return (
       <ul className="filters">
         <label>
-          <input type="radio" name="filter" onClick={this.filter} value="All" />
+          <input
+            type="radio"
+            name="filter"
+            onClick={this.filter}
+            value="All"
+            defaultChecked={this.props.checkedRadio.all}
+          />
           All
         </label>
         <label>
@@ -31,7 +38,7 @@ export default class TasksFilter extends Component {
 }
 
 TasksFilter.defaultProps = {
-  classBtn: { all: 'selected', active: '', completed: '' },
+  classBtn: { all: 'true', active: 'false', completed: 'false' },
   onFilter: () => {},
 };
 

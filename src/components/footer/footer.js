@@ -9,17 +9,17 @@ export default class Footer extends Component {
     super(props);
 
     this.state = {
-      targetBtnClass: {
-        all: 'selected',
-        active: '',
-        completed: '',
+      checkedRadio: {
+        all: 'true',
+        active: 'false',
+        completed: 'false',
       },
     };
 
     this.filterBtn = e => {
       this.setState(() => {
-        const newObj = { all: '', active: '', completed: '' };
-        return { targetBtnClass: { ...newObj, [e.target.value.toLowerCase()]: 'selected' } };
+        const newObj = { all: 'false', active: 'false', completed: 'false' };
+        return { checkedRadio: { ...newObj, [e.target.value.toLowerCase()]: 'true' } };
       });
       props.onFilter(e);
     };
@@ -30,7 +30,7 @@ export default class Footer extends Component {
     return (
       <footer className="footer">
         <span className="todo-count"> {activeCount} items left</span>
-        <TasksFilter onFilter={this.filterBtn} classBtn={this.state.targetBtnClass} />
+        <TasksFilter onFilter={this.filterBtn} checkedRadio={this.state.checkedRadio} />
         <button className="clear-completed" onClick={onClearCompleted}>
           Clear completed
         </button>
