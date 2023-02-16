@@ -67,7 +67,8 @@ class App extends Component {
     };
 
     this.onFilter = e => {
-      this.setState({ filterBtn: e.target.textContent });
+      console.log(e.target.value);
+      this.setState({ filterBtn: e.target.value });
     };
 
     this.onEdit = id => {
@@ -107,6 +108,7 @@ class App extends Component {
     const activeCount = todoData.filter(el => !el.done).length;
 
     let filterData = todoData;
+    console.log(this.state.filterBtn);
     if (this.state.filterBtn === 'Active') {
       filterData = this.state.todoData.filter(el => el.className !== 'completed');
     }

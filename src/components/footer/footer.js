@@ -19,7 +19,7 @@ export default class Footer extends Component {
     this.filterBtn = e => {
       this.setState(() => {
         const newObj = { all: '', active: '', completed: '' };
-        return { targetBtnClass: { ...newObj, [e.target.textContent.toLowerCase()]: 'selected' } };
+        return { targetBtnClass: { ...newObj, [e.target.value.toLowerCase()]: 'selected' } };
       });
       props.onFilter(e);
     };

@@ -11,24 +11,20 @@ export default class TasksFilter extends Component {
     };
   }
   render() {
-    const { classBtn } = this.props;
     return (
       <ul className="filters">
-        <li>
-          <button className={classBtn.all} onClick={this.filter}>
-            All
-          </button>
-        </li>
-        <li>
-          <button className={classBtn.active} onClick={this.filter}>
-            Active
-          </button>
-        </li>
-        <li>
-          <button className={classBtn.completed} onClick={this.filter}>
-            Completed
-          </button>
-        </li>
+        <label>
+          <input type="radio" name="filter" onClick={this.filter} value="All" />
+          All
+        </label>
+        <label>
+          <input type="radio" name="filter" onClick={this.filter} value="Active" />
+          Active
+        </label>
+        <label>
+          <input type="radio" name="filter" onClick={this.filter} value="Completed" />
+          Completed
+        </label>
       </ul>
     );
   }
