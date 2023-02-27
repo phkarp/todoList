@@ -6,7 +6,7 @@ import './task-list.css';
 
 export default class TaskList extends Component {
   render() {
-    const { todos, onDeleted, onCompleted, onEdit, onUpdateDescription } = this.props;
+    const { todos, onDeleted, onCompleted, onEdit, onUpdateDescription, onPlay, onPause } = this.props;
 
     const tasks = todos.map(item => {
       const { className, id, description } = item;
@@ -38,6 +38,8 @@ export default class TaskList extends Component {
             }}
             onCompleted={() => onCompleted(id)}
             onEdit={() => onEdit(id)}
+            onPlay={() => onPlay(id)}
+            onPause={() => onPause(id)}
           />
 
           <form onSubmit={onSubmit}>{inputEdit}</form>

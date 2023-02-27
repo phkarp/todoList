@@ -11,7 +11,6 @@ export default class TasksFilter extends Component {
     };
   }
   render() {
-    console.log(this.props.checkedRadio);
     return (
       <ul className="filters">
         <label>

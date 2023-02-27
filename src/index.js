@@ -47,27 +47,27 @@ class App extends Component {
         };
 
         const result = [...todoData.slice(0, idx), newItem, ...todoData.slice(idx + 1)];
-
         return { todoData: result };
       });
     };
 
-    this.onItemAdded = value => {
+    this.onItemAdded = (task, timer) => {
       this.setState(({ todoData }) => {
         const arr = todoData.slice();
         arr.push({
-          description: value,
+          description: task,
+          timer: timer,
           created: Date.now(),
           id: `task${this.maxId++}`,
           className: 'active',
           done: false,
+          timerPlay: false,
         });
         return { todoData: arr };
       });
     };
 
     this.onFilter = e => {
-      console.log(e.target.value);
       this.setState({ filterBtn: e.target.value });
     };
 
@@ -87,13 +87,62 @@ class App extends Component {
       });
     };
 
-    this.onUpdateDescription = (id, description) => {
+    this.onUpdateDescription = (id, task) => {
       this.setState(({ todoData }) => {
         const idx = todoData.findIndex(el => el.id === id);
 
         const newItem = {
           ...todoData[idx],
-          description: description,
+          description: task,
+        };
+
+        const result = [...todoData.slice(0, idx), newItem, ...todoData.slice(idx + 1)];
+
+        return { todoData: result };
+      });
+    };
+
+    this.onPlay = id => {
+      const idx = this.state.todoData.findIndex(el => el.id === id);
+      if (this.state.todoData[idx].timerPlay) {
+        return;
+      }
+      this.setState(({ todoData }) => {
+        const idx = todoData.findIndex(el => el.id === id);
+
+        const newItem = {
+          ...todoData[idx],
+          timerPlay: true,
+          timerId: setInterval(() => {
+            this.setState(({ todoData }) => {
+              const newItem = {
+                ...todoData[idx],
+                timer: todoData[idx].timer + 1,
+              };
+
+              const result = [...todoData.slice(0, idx), newItem, ...todoData.slice(idx + 1)];
+
+              return { todoData: result };
+            });
+          }, 1000),
+        };
+
+        const result = [...todoData.slice(0, idx), newItem, ...todoData.slice(idx + 1)];
+
+        return { todoData: result };
+      });
+    };
+
+    this.onPause = id => {
+      const todoData = this.state.todoData;
+      const idx = todoData.findIndex(el => el.id === id);
+      clearInterval(todoData[idx].timerId);
+      this.setState(({ todoData }) => {
+        const idx = todoData.findIndex(el => el.id === id);
+
+        const newItem = {
+          ...todoData[idx],
+          timerPlay: false,
         };
 
         const result = [...todoData.slice(0, idx), newItem, ...todoData.slice(idx + 1)];
@@ -108,7 +157,6 @@ class App extends Component {
     const activeCount = todoData.filter(el => !el.done).length;
 
     let filterData = todoData;
-    console.log(this.state.filterBtn);
     if (this.state.filterBtn === 'Active') {
       filterData = this.state.todoData.filter(el => el.className !== 'completed');
     }
@@ -129,6 +177,8 @@ class App extends Component {
             onCompleted={this.onCompleted}
             onEdit={this.onEdit}
             onUpdateDescription={this.onUpdateDescription}
+            onPlay={this.onPlay}
+            onPause={this.onPause}
           />
           <Footer activeCount={activeCount} onClearCompleted={this.onClearCompleted} onFilter={this.onFilter} />
         </section>
